@@ -34,7 +34,8 @@ class Symbol:
 
 class Kana:
 
-    def __init__(self):
+    def __init__(self, name: str):
+        self.__name = name
         self.__symbols = []
         self.__consonantMap = { consonant: [] for consonant in Consonant }
         self.__vowelMap = { vowel: [] for vowel in Vowel }
@@ -56,15 +57,18 @@ class Kana:
             if item.consonant == symbol.consonant and item.vowel == symbol.vowel:
                 raise ValueError(f'Symbol {symbol} already defined in Kana.')
 
+    def getName(self) -> str:
+        return self.__name
+
     def __repr__(self):
         symbols = ',\n\t'.join([symbol.__repr__() for symbol in self.__symbols])
-        return f'{type(self)} [\n\t{symbols}\n]'
+        return f'{self.__name} [\n\t{symbols}\n]'
 
 
 class Hiragana(Kana):
 
     def __init__(self):
-        super().__init__()
+        super().__init__('Hiragana')
 
         # None
         self.addSymbol(Symbol(vowel=Vowel.A, consonant=Consonant.NONE, symbol='あ', syllabary='a'))
