@@ -1,12 +1,19 @@
 import random
 
-from kana import Kana
+from kana import Kana, Symbol
 
 
 class Exercise:
 
     def run(self):
         pass
+
+    def symbolsContainSyllabary(self, syllabary: str, symbols: [Symbol]) -> bool:
+        for symbol in symbols:
+            if syllabary == symbol.syllabary:
+                return True
+
+        return False
 
 
 class VowelGroupQuiz(Exercise):
@@ -26,7 +33,25 @@ class ConsonantGroupQuiz(Exercise):
 
     def run(self):
         super(ConsonantGroupQuiz, self).run()
-        print('TODO: ConsonantGroupQuiz')
+
+        print('====================Consonant Group QUIZ===================')
+        print(f'Write all syllabary in the upcomming consonant groups {self.kana.getName()}')
+
+        consonants = self.kana.getConsonants()
+        consonants = random.sample(consonants, len(consonants))
+
+        for consonant in consonants:
+
+            symbols = self.kana.getSymbolsForConsonant(consonant)
+            found = set()
+
+            while len(found) < len(symbols):
+                answer = input(f'[{len(found)}|{len(symbols)}] {consonant.value} >').lower()
+
+                if self.symbolsContainSyllabary(answer, symbols):
+                    found.add(answer)
+
+            print('')
 
 
 class SymbolQuiz(Exercise):

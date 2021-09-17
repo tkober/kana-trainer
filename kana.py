@@ -11,7 +11,7 @@ class Vowel (Enum):
 
 
 class Consonant(Enum):
-    NONE = ''
+    NONE = 'NONE'
     K = 'k'
     S = 's'
     T = 't'
@@ -48,17 +48,29 @@ class Kana:
         self.__consonantMap.get(symbol.consonant).append(symbol)
         self.__vowelMap.get(symbol.vowel).append(symbol)
 
-    def getAllSymbols(self) -> [Symbol]:
-        return self.__symbols
-
     def _assertSymbolNotInList(self, symbol: Symbol, list: [Symbol]):
         item: Symbol
         for item in list:
             if item.consonant == symbol.consonant and item.vowel == symbol.vowel:
                 raise ValueError(f'Symbol {symbol} already defined in Kana.')
 
+    def getAllSymbols(self) -> [Symbol]:
+        return self.__symbols
+
+    def getSymbolsForConsonant(self, consonant: Consonant) -> [Symbol]:
+        return self.__consonantMap.get(consonant)
+
+    def getSymbolsForVowel(self, vowel: Vowel) -> [Symbol]:
+        return self.__vowelMap.get(vowel)
+
     def getName(self) -> str:
         return self.__name
+
+    def getConsonants(self) -> [Consonant]:
+        return self.__consonantMap.keys()
+
+    def getVowels(self) -> [Vowel]:
+        return self.__vowelMap.keys()
 
     def __repr__(self):
         symbols = ',\n\t'.join([symbol.__repr__() for symbol in self.__symbols])

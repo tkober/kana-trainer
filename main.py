@@ -39,7 +39,7 @@ class App:
             random.shuffle(exercises)
             for exercise in exercises:
                 exercise.run()
-                print('\n')
+                print()
 
             keepGoing = self.infiniteLoop
 
@@ -55,14 +55,14 @@ if __name__ == '__main__':
     argparser.add_argument(
         '-v',
         '--vowel',
-        help="Adds the vowel quiz to your exercises.",
+        help="Adds the vowel group quiz to your exercises.",
         action="store_true"
     )
 
     argparser.add_argument(
         '-c',
         '--consonant',
-        help="Adds the consonant quiz to your exercises.",
+        help="Adds the consonant group quiz to your exercises.",
         action="store_true"
     )
 
