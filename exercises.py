@@ -23,7 +23,25 @@ class VowelGroupQuiz(Exercise):
 
     def run(self):
         super(VowelGroupQuiz, self).run()
-        print('TODO: VowelGroupQuiz')
+
+        print('=====================Vowel Group QUIZ======================')
+        print(f'Write all syllabary in the upcomming vowel groups {self.kana.getName()}')
+
+        vowels = self.kana.getVowels()
+        vowels = random.sample(vowels, len(vowels))
+
+        for vowel in vowels:
+            print('')
+            symbols = self.kana.getSymbolsForVowel(vowel)
+            found = set()
+
+            while len(found) < len(symbols):
+                answer = input(f'[{len(found)}|{len(symbols)}] {vowel.value} >').lower()
+
+                if self.symbolsContainSyllabary(answer, symbols):
+                    found.add(answer)
+
+            print('Great you finished that group')
 
 
 class ConsonantGroupQuiz(Exercise):
@@ -41,7 +59,7 @@ class ConsonantGroupQuiz(Exercise):
         consonants = random.sample(consonants, len(consonants))
 
         for consonant in consonants:
-
+            print('')
             symbols = self.kana.getSymbolsForConsonant(consonant)
             found = set()
 
@@ -51,7 +69,7 @@ class ConsonantGroupQuiz(Exercise):
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
-            print('')
+            print('Great you finished that group')
 
 
 class SymbolQuiz(Exercise):

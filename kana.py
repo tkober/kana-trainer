@@ -145,7 +145,7 @@ class Hiragana(Kana):
 
         # W
         self.addSymbol(Symbol(vowel=Vowel.A, consonant=Consonant.W, symbol='わ', syllabary='wa'))
-        self.addSymbol(Symbol(vowel=Vowel.O, consonant=Consonant.W, symbol='を', syllabary='o'))
+        self.addSymbol(Symbol(vowel=Vowel.O, consonant=Consonant.W, symbol='を', syllabary='wo'))
 
         # DOT
         self.addSymbol(Symbol(vowel=Vowel.A, consonant=Consonant.DOT, symbol='ん', syllabary='n/m'))
