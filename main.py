@@ -28,10 +28,12 @@ class App:
 
             exercises = []
             if self.vowelGroupQuiz:
-                exercises.append(VowelGroupQuiz(self.kana))
+                for vowel in self.kana.getVowels():
+                    exercises.append(VowelGroupQuiz(self.kana, vowel))
 
             if self.consonantGroupQuiz:
-                exercises.append(ConsonantGroupQuiz(self.kana))
+                for consonant in self.kana.getConsonants():
+                    exercises.append(ConsonantGroupQuiz(self.kana, consonant))
 
             if self.symbolQuiz:
                 exercises.append(SymbolQuiz(self.kana))
@@ -92,6 +94,6 @@ if __name__ == '__main__':
         infiniteLoop=args.infinite,
         vowelGroupQuiz=args.vowel,
         consonantGroupQuiz=args.consonant,
-        symbolQuiz=args.consonant
+        symbolQuiz=args.symbol
     )
     app.run()

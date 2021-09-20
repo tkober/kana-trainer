@@ -3,7 +3,7 @@ import random
 from subprocess import call
 from time import sleep
 
-from kana import Kana, Symbol
+from kana import Kana, Symbol, Consonant, Vowel
 
 
 class Exercise:
@@ -21,6 +21,9 @@ class Exercise:
 
     def clearConsole(self):
         _ = call('clear' if os.name == 'posix' else 'cls')
+        
+    def printQuizTitle(self):
+        pass
 
 
 class CompletionExercise(Exercise):
@@ -40,65 +43,77 @@ class CompletionExercise(Exercise):
 
 class VowelGroupQuiz(CompletionExercise):
 
+    def __init__(self, kana: Kana, vowel: Vowel):
+        super(VowelGroupQuiz, self).__init__(kana)
+        self.__vowel = vowel
+
     def run(self):
+        symbols = self.kana.getSymbolsForVowel(self.__vowel)
+        found = set()
+
+        self.clearConsole()
+        while len(found) < len(symbols):
+            self.printQuizTitle()
+            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+            promt = f'{symbolslist}\n{syllabariesList} {self.__vowel.value} >'
+            answer = input(promt).lower()
+
+            if self.symbolsContainSyllabary(answer, symbols):
+                found.add(answer)
+
+            self.clearConsole()
+
+        syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+        self.printQuizTitle()
+        print(f'{symbolslist}\n{syllabariesList}')
+        print('Great you finished that group')
+
         super(VowelGroupQuiz, self).run()
 
-        print('=====================Vowel Group QUIZ======================')
+    def printQuizTitle(self):
+        super(VowelGroupQuiz, self).printQuizTitle()
+        print('=====================Vowel Group Quiz======================')
         print(f'Write all syllabary in the upcomming vowel groups of {self.kana.getName()}')
 
-        vowels = self.kana.getVowels()
-        vowels = random.sample(vowels, len(vowels))
-
-        for vowel in vowels:
-            print('')
-            symbols = self.kana.getSymbolsForVowel(vowel)
-            found = set()
-
-            while len(found) < len(symbols):
-                syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-                promt = f'{symbolslist}\n{syllabariesList} {vowel.value} >'
-                answer = input(promt).lower()
-
-                self.clearConsole()
-                if self.symbolsContainSyllabary(answer, symbols):
-                    found.add(answer)
-
-            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-            print(f'\n{symbolslist}\n{syllabariesList}')
-            print('Great you finished that group')
-
-            super(VowelGroupQuiz, self).run()
+        print('')
+        
 
 
 class ConsonantGroupQuiz(CompletionExercise):
+    
+    def __init__(self, kana: Kana, consonant: Consonant):
+        super(ConsonantGroupQuiz, self).__init__(kana)
+        self.__consonant = consonant
 
     def run(self):
-        super(ConsonantGroupQuiz, self).run()
+        symbols = self.kana.getSymbolsForConsonant(self.__consonant)
+        found = set()
 
+        self.clearConsole()
+        while len(found) < len(symbols):
+            self.printQuizTitle()
+            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+            promt = f'{symbolslist}\n{syllabariesList} {self.__consonant.value} >>'
+            answer = input(promt).lower()
+
+            if self.symbolsContainSyllabary(answer, symbols):
+                found.add(answer)
+
+            self.clearConsole()
+
+        syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+        self.printQuizTitle()
+        print(f'{symbolslist}\n{syllabariesList}')
+        print('Great you finished that group')
+
+        super(ConsonantGroupQuiz, self).run()
+        
+    def printQuizTitle(self):
+        super(ConsonantGroupQuiz, self).printQuizTitle()
         print('====================Consonant Group QUIZ===================')
         print(f'Write all syllabary in the upcomming consonant groups of {self.kana.getName()}')
 
-        consonants = self.kana.getConsonants()
-        consonants = random.sample(consonants, len(consonants))
-
-        for consonant in consonants:
-            print('')
-            symbols = self.kana.getSymbolsForConsonant(consonant)
-            found = set()
-
-            while len(found) < len(symbols):
-                syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-                promt = f'{symbolslist}\n{syllabariesList} {consonant.value} >>'
-                answer = input(promt).lower()
-
-                if self.symbolsContainSyllabary(answer, symbols):
-                    found.add(answer)
-
-            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-            print(f'\n{symbolslist}\n{syllabariesList}')
-            print('Great you finished that group')
-
-            super(ConsonantGroupQuiz, self).run()
+        print('')
 
 
 class SymbolQuiz(Exercise):
