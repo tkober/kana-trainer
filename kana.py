@@ -34,11 +34,12 @@ class Symbol:
 
 class Kana:
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, maxSyllabaryLength=3):
         self.__name = name
         self.__symbols = []
         self.__consonantMap = {consonant: [] for consonant in Consonant}
         self.__vowelMap = {vowel: [] for vowel in Vowel}
+        self.__maxSyllabaryLength = maxSyllabaryLength
 
     def addSymbol(self, symbol: Symbol):
         self._assertSymbolNotInList(symbol, self.__consonantMap[symbol.consonant])
@@ -95,6 +96,9 @@ class Kana:
             syllabaryRow = '\t' + '\t\t'.join(
                 [syllabaryMap[consonant] for consonant in Consonant])
             print(syllabaryRow)
+
+    def getMaxSyllabaryLength(self) -> int:
+        return self.__maxSyllabaryLength
 
 
 class Hiragana(Kana):

@@ -35,12 +35,22 @@ class VowelGroupQuiz(Exercise):
             symbols = self.kana.getSymbolsForVowel(vowel)
             found = set()
 
+            ljustSize = self.kana.getMaxSyllabaryLength()
+
+            def buildFoundList():
+                foundSymbols = ' '.join(
+                    [symbol.syllabary.ljust(ljustSize) if symbol.syllabary in found else ''.ljust(ljustSize) for symbol
+                     in symbols])
+                return f'[{foundSymbols}]'
+
             while len(found) < len(symbols):
-                answer = input(f'[{len(found)}|{len(symbols)}] {vowel.value} >').lower()
+                promt = f'{buildFoundList()} {vowel.value} >'
+                answer = input(promt).lower()
 
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
+            print(f'\n{buildFoundList()}')
             print('Great you finished that group')
 
 
