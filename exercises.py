@@ -25,7 +25,7 @@ class VowelGroupQuiz(Exercise):
         super(VowelGroupQuiz, self).run()
 
         print('=====================Vowel Group QUIZ======================')
-        print(f'Write all syllabary in the upcomming vowel groups {self.kana.getName()}')
+        print(f'Write all syllabary in the upcomming vowel groups of {self.kana.getName()}')
 
         vowels = self.kana.getVowels()
         vowels = random.sample(vowels, len(vowels))
@@ -35,9 +35,8 @@ class VowelGroupQuiz(Exercise):
             symbols = self.kana.getSymbolsForVowel(vowel)
             found = set()
 
-            ljustSize = self.kana.getMaxSyllabaryLength()
-
             def buildFoundList():
+                ljustSize = self.kana.getMaxSyllabaryLength()
                 foundSymbols = ' '.join(
                     [symbol.syllabary.ljust(ljustSize) if symbol.syllabary in found else ''.ljust(ljustSize) for symbol
                      in symbols])
@@ -63,7 +62,7 @@ class ConsonantGroupQuiz(Exercise):
         super(ConsonantGroupQuiz, self).run()
 
         print('====================Consonant Group QUIZ===================')
-        print(f'Write all syllabary in the upcomming consonant groups {self.kana.getName()}')
+        print(f'Write all syllabary in the upcomming consonant groups of {self.kana.getName()}')
 
         consonants = self.kana.getConsonants()
         consonants = random.sample(consonants, len(consonants))
@@ -73,12 +72,21 @@ class ConsonantGroupQuiz(Exercise):
             symbols = self.kana.getSymbolsForConsonant(consonant)
             found = set()
 
+            def buildFoundList():
+                ljustSize = self.kana.getMaxSyllabaryLength()
+                foundSymbols = ' '.join(
+                    [symbol.syllabary.ljust(ljustSize) if symbol.syllabary in found else ''.ljust(ljustSize) for symbol
+                     in symbols])
+                return f'[{foundSymbols}]'
+
             while len(found) < len(symbols):
-                answer = input(f'[{len(found)}|{len(symbols)}] {consonant.value} >').lower()
+                promt = f'{buildFoundList()} {consonant.value} >'
+                answer = input(promt).lower()
 
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
+            print(f'\n{buildFoundList()}')
             print('Great you finished that group')
 
 
