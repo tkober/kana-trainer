@@ -53,12 +53,6 @@ if __name__ == '__main__':
     )
 
     argparser.add_argument(
-        '--hiragana',
-        help="Prints an overview of all hiragana.",
-        action="store_true"
-    )
-
-    argparser.add_argument(
         '-v',
         '--vowel',
         help="Adds the vowel group quiz to your exercises.",
@@ -89,7 +83,7 @@ if __name__ == '__main__':
     args = argparser.parse_args()
 
     hiragana = Hiragana()
-    if args.hiragana:
+    if args.vowel == False and args.consonant == False and args.consonant == False:
         hiragana.print()
         exit(0)
 
@@ -98,6 +92,6 @@ if __name__ == '__main__':
         infiniteLoop=args.infinite,
         vowelGroupQuiz=args.vowel,
         consonantGroupQuiz=args.consonant,
-        symbolQuiz=args.symbol
+        symbolQuiz=args.consonant
     )
     app.run()
