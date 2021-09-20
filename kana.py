@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class Vowel (Enum):
+class Vowel(Enum):
     A = 'a'
     I = 'i'
     U = 'u'
@@ -37,8 +37,8 @@ class Kana:
     def __init__(self, name: str):
         self.__name = name
         self.__symbols = []
-        self.__consonantMap = { consonant: [] for consonant in Consonant }
-        self.__vowelMap = { vowel: [] for vowel in Vowel }
+        self.__consonantMap = {consonant: [] for consonant in Consonant}
+        self.__vowelMap = {vowel: [] for vowel in Vowel}
 
     def addSymbol(self, symbol: Symbol):
         self._assertSymbolNotInList(symbol, self.__consonantMap[symbol.consonant])
@@ -75,6 +75,26 @@ class Kana:
     def __repr__(self):
         symbols = ',\n\t'.join([symbol.__repr__() for symbol in self.__symbols])
         return f'{self.__name} [\n\t{symbols}\n]'
+
+    def print(self):
+        headers = '\t' + '\t\t'.join([consonant.value for consonant in Consonant])
+        print(headers)
+
+        for vowel in Vowel:
+            print()
+            symbolMap = {consonant: '' for consonant in Consonant}
+            syllabaryMap = {consonant: '' for consonant in Consonant}
+            for symbol in self.__vowelMap.get(vowel):
+                symbolMap[symbol.consonant] = symbol.symbol
+                syllabaryMap[symbol.consonant] = symbol.syllabary
+
+            symbolRow = vowel.value + '\t' + '\t\t'.join(
+                [symbolMap[consonant] for consonant in Consonant])
+            print(symbolRow)
+
+            syllabaryRow = '\t' + '\t\t'.join(
+                [syllabaryMap[consonant] for consonant in Consonant])
+            print(syllabaryRow)
 
 
 class Hiragana(Kana):
