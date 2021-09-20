@@ -16,10 +16,22 @@ class Exercise:
         return False
 
 
-class VowelGroupQuiz(Exercise):
+class CompletionExercise(Exercise):
 
     def __init__(self, kana: Kana):
         self.kana = kana
+
+    def buildFoundList(self, requiredSymbols, foundSyllabaries):
+        syllabaries = '\t'.join(
+            [symbol.syllabary if symbol.syllabary in foundSyllabaries else '' for symbol in requiredSymbols])
+
+        symbols = '\t'.join(
+            [symbol.symbol if symbol.syllabary in foundSyllabaries else '' for symbol in requiredSymbols])
+
+        return f'{syllabaries}\t|', f'{symbols}'
+
+
+class VowelGroupQuiz(CompletionExercise):
 
     def run(self):
         super(VowelGroupQuiz, self).run()
@@ -35,28 +47,20 @@ class VowelGroupQuiz(Exercise):
             symbols = self.kana.getSymbolsForVowel(vowel)
             found = set()
 
-            def buildFoundList():
-                ljustSize = self.kana.getMaxSyllabaryLength()
-                foundSymbols = ' '.join(
-                    [symbol.syllabary.ljust(ljustSize) if symbol.syllabary in found else ''.ljust(ljustSize) for symbol
-                     in symbols])
-                return f'[{foundSymbols}]'
-
             while len(found) < len(symbols):
-                promt = f'{buildFoundList()} {vowel.value} >'
+                syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+                promt = f'{symbolslist}\n{syllabariesList} {vowel.value} >'
                 answer = input(promt).lower()
 
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
-            print(f'\n{buildFoundList()}')
+            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+            print(f'\n{symbolslist}\n{syllabariesList}')
             print('Great you finished that group')
 
 
-class ConsonantGroupQuiz(Exercise):
-
-    def __init__(self, kana: Kana):
-        self.kana = kana
+class ConsonantGroupQuiz(CompletionExercise):
 
     def run(self):
         super(ConsonantGroupQuiz, self).run()
@@ -72,21 +76,16 @@ class ConsonantGroupQuiz(Exercise):
             symbols = self.kana.getSymbolsForConsonant(consonant)
             found = set()
 
-            def buildFoundList():
-                ljustSize = self.kana.getMaxSyllabaryLength()
-                foundSymbols = ' '.join(
-                    [symbol.syllabary.ljust(ljustSize) if symbol.syllabary in found else ''.ljust(ljustSize) for symbol
-                     in symbols])
-                return f'[{foundSymbols}]'
-
             while len(found) < len(symbols):
-                promt = f'{buildFoundList()} {consonant.value} >'
+                syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+                promt = f'{symbolslist}\n{syllabariesList} {consonant.value} >>'
                 answer = input(promt).lower()
 
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
-            print(f'\n{buildFoundList()}')
+            syllabariesList, symbolslist = self.buildFoundList(symbols, found)
+            print(f'\n{symbolslist}\n{syllabariesList}')
             print('Great you finished that group')
 
 
@@ -108,4 +107,4 @@ class SymbolQuiz(Exercise):
 
             answer = ''
             while answer.lower() != symbol.syllabary:
-                answer = input(f'[{i + 1}|{self.sampleSize}]: {symbol.symbol} >')
+                answer = input(f'[{i + 1}|{self.sampleSize}]: {symbol.symbol} >>')
