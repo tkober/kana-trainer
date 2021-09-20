@@ -1,4 +1,7 @@
+import os
 import random
+from subprocess import call
+from time import sleep
 
 from kana import Kana, Symbol
 
@@ -6,7 +9,8 @@ from kana import Kana, Symbol
 class Exercise:
 
     def run(self):
-        pass
+        input('[Next Exercise]')
+        self.clearConsole()
 
     def symbolsContainSyllabary(self, syllabary: str, symbols: [Symbol]) -> bool:
         for symbol in symbols:
@@ -14,6 +18,9 @@ class Exercise:
                 return True
 
         return False
+
+    def clearConsole(self):
+        _ = call('clear' if os.name == 'posix' else 'cls')
 
 
 class CompletionExercise(Exercise):
@@ -52,12 +59,15 @@ class VowelGroupQuiz(CompletionExercise):
                 promt = f'{symbolslist}\n{syllabariesList} {vowel.value} >'
                 answer = input(promt).lower()
 
+                self.clearConsole()
                 if self.symbolsContainSyllabary(answer, symbols):
                     found.add(answer)
 
             syllabariesList, symbolslist = self.buildFoundList(symbols, found)
             print(f'\n{symbolslist}\n{syllabariesList}')
             print('Great you finished that group')
+
+            super(VowelGroupQuiz, self).run()
 
 
 class ConsonantGroupQuiz(CompletionExercise):
@@ -88,6 +98,8 @@ class ConsonantGroupQuiz(CompletionExercise):
             print(f'\n{symbolslist}\n{syllabariesList}')
             print('Great you finished that group')
 
+            super(ConsonantGroupQuiz, self).run()
+
 
 class SymbolQuiz(Exercise):
 
@@ -108,3 +120,5 @@ class SymbolQuiz(Exercise):
             answer = ''
             while answer.lower() != symbol.syllabary:
                 answer = input(f'[{i + 1}|{self.sampleSize}]: {symbol.symbol} >>')
+
+        super(SymbolQuiz, self).run()
