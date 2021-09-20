@@ -55,8 +55,8 @@ class VowelGroupQuiz(CompletionExercise):
         while len(found) < len(symbols):
             self.printQuizTitle()
             syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-            promt = f'{symbolslist}\n{syllabariesList} {self.__vowel.value} >'
-            answer = input(promt).lower()
+            prompt = f'{symbolslist}\n{syllabariesList} {self.__vowel.value} >'
+            answer = input(prompt).lower()
 
             if self.symbolsContainSyllabary(answer, symbols):
                 found.add(answer)
@@ -93,8 +93,8 @@ class ConsonantGroupQuiz(CompletionExercise):
         while len(found) < len(symbols):
             self.printQuizTitle()
             syllabariesList, symbolslist = self.buildFoundList(symbols, found)
-            promt = f'{symbolslist}\n{syllabariesList} {self.__consonant.value} >>'
-            answer = input(promt).lower()
+            prompt = f'{symbolslist}\n{syllabariesList} {self.__consonant.value} >>'
+            answer = input(prompt).lower()
 
             if self.symbolsContainSyllabary(answer, symbols):
                 found.add(answer)
